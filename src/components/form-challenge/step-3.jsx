@@ -59,7 +59,7 @@ export default function Step3Form() {
 
                     return Promise.resolve();
                   },
-                  message: "Confirm Password must be same with Password!",
+                  message: "Password doesn't match!",
                 },
               ]}
             >

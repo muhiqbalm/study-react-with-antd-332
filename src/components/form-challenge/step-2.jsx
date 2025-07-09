@@ -1,5 +1,5 @@
 import { Form, Input } from "antd";
-import { onlyAlphanumeric, onlyNumeric } from "../../utils";
+import { onlyNumeric } from "../../utils";
 
 export default function Step2Form() {
   return (
@@ -49,7 +49,6 @@ export default function Step2Form() {
           maxLength={255}
           showCount
           placeholder="Enter your address"
-          onKeyDown={onlyAlphanumeric}
         />
       </Form.Item>
     </>

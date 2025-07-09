@@ -1,7 +1,22 @@
 import { Form, Input } from "antd";
 import { onlyAlphanumeric } from "../../utils";
+import { useEffect, useState } from "react";
 
 export default function Step1Form() {
+  const [data, setData] = useState([]);
+
+  const getLocalData = () => {
+    const localData = localStorage.getItem("list_form");
+
+    if (localData) {
+      setData(JSON.parse(localData));
+    }
+  };
+
+  useEffect(() => {
+    getLocalData();
+  }, []);
+
   return (
     <>
       <Form.Item
@@ -26,7 +41,21 @@ export default function Step1Form() {
         name="username"
         label="Username"
         validateTrigger="onBlur"
-        rules={[{ required: true, message: "Username is required!" }]}
+        rules={[
+          { required: true, message: "Username is required!" },
+          {
+            validator: (_, value) => {
+              const isExists = data.some((item) => item.username === value);
+
+              if (value && isExists) {
+                return Promise.reject();
+              }
+
+              return Promise.resolve();
+            },
+            message: "Username already taken!",
+          },
+        ]}
         normalize={(value) => {
           return value.toUpperCase();
         }}

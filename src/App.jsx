@@ -2,7 +2,7 @@ import { DesktopOutlined, HomeOutlined } from "@ant-design/icons";
 import { ConfigProvider, theme, App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./components";
-import { RegistrationForm, Week3ChallengeForm } from "./pages";
+import { RegistrationForm, Week3ChallengeForm, Week3ListTable } from "./pages";
 
 const items = [
   {
@@ -20,6 +20,15 @@ const items = [
         key: "/week-3/form",
         label: "Form Challenge",
         element: <Week3ChallengeForm />,
+      },
+      {
+        key: "/week-3/list",
+        label: "List Table",
+        element: (
+          <>
+            <Week3ListTable />
+          </>
+        ),
       },
     ],
   },

@@ -8,7 +8,6 @@ import {
   Steps,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
 import {
   Step1Form,
   Step2Form,
@@ -17,6 +16,7 @@ import {
   Summary,
   TitleCard,
 } from "../../components";
+import { useEffect, useState } from "react";
 
 export default function Week3ChallengeForm() {
   const [form] = Form.useForm();
