@@ -42,7 +42,12 @@ const NavigationBar = ({ items }) => {
         mode="inline"
         inlineCollapsed={collapsed}
         className="h-[calc(100vh-32px-24px)]"
-        items={items}
+        items={items.map((item) => ({
+          ...item,
+          children: Array.isArray(item.children)
+            ? item.children.filter((child) => child.show !== false)
+            : [],
+        }))}
         onSelect={(item) => {
           setSelectedKey(item.key);
           navigate(item.key);

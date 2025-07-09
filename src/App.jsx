@@ -1,10 +1,38 @@
 import { DesktopOutlined, HomeOutlined } from "@ant-design/icons";
 import { ConfigProvider, theme, App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AppLayout } from "./components";
-import { RegistrationForm, Week3ChallengeForm, Week3ListTable } from "./pages";
+import {
+  NotFoundPage,
+  Week3ChallengeForm,
+  Week3DetailData,
+  Week3ListTable,
+} from "./pages";
+import { ProtectedLayout, UnprotectedLayout } from "./layouts";
 
-const items = [
+function App() {
+  return (
+    <BrowserRouter>
+      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+        <AntdApp>
+          <Routes>
+            <Route
+              path="/"
+              element={<ProtectedLayout items={protectedItems} />}
+            >
+              {generateRoutes(protectedItems)}
+            </Route>
+
+            <Route path="/" element={<UnprotectedLayout />}>
+              {generateRoutes(publicItems)}
+            </Route>
+          </Routes>
+        </AntdApp>
+      </ConfigProvider>
+    </BrowserRouter>
+  );
+}
+
+const protectedItems = [
   {
     key: "/",
     icon: <HomeOutlined />,
@@ -30,6 +58,13 @@ const items = [
           </>
         ),
       },
+      {
+        key: "/week-3/list",
+        path: "/week-3/list/:id",
+        label: "Detail Data",
+        show: false,
+        element: <Week3DetailData />,
+      },
     ],
   },
   {
@@ -40,13 +75,26 @@ const items = [
       {
         key: "/week-3/day-1",
         label: "Day 1",
-        element: (
-          <>
-            <RegistrationForm />
-          </>
-        ),
+        element: <></>,
       },
     ],
+  },
+];
+
+const publicItems = [
+  {
+    key: "/login",
+    label: "Login",
+    element: (
+      <>
+        <h1>LOGIN</h1>
+      </>
+    ),
+  },
+  {
+    key: "*",
+    label: "Not Found",
+    element: <NotFoundPage />,
   },
 ];
 
@@ -56,7 +104,11 @@ function generateRoutes(items) {
   items.forEach((item) => {
     if (item.element) {
       routes.push(
-        <Route key={item.key} path={item.key} element={item.element} />
+        <Route
+          key={item.key}
+          path={item.path ?? item.key}
+          element={item.element}
+        />
       );
     }
 
@@ -66,20 +118,6 @@ function generateRoutes(items) {
   });
 
   return routes;
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-        <AntdApp>
-          <AppLayout items={items}>
-            <Routes>{generateRoutes(items)}</Routes>
-          </AppLayout>
-        </AntdApp>
-      </ConfigProvider>
-    </BrowserRouter>
-  );
 }
 
 export default App;

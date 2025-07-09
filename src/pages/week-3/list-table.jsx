@@ -1,11 +1,14 @@
 import { App, Button, Divider, Table, Tooltip, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { TitleCard } from "../../components";
-import { DeleteFilled } from "@ant-design/icons";
+import { DeleteFilled, EyeFilled } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useLocalData } from "../../hooks";
 
 export default function Week3ListTable({}) {
+  const navigate = useNavigate();
   const { modal } = App.useApp();
-  const [data, setData] = useState([]);
+  const [localData, refetch] = useLocalData("list_form");
 
   const columns = [
     {
@@ -32,49 +35,49 @@ export default function Week3ListTable({}) {
       title: "Action",
       align: "center",
       render: (_, row, index) => (
-        <Tooltip title="Delete Data">
-          <Button
-            danger
-            icon={<DeleteFilled />}
-            onClick={() => {
-              modal.confirm({
-                icon: <></>,
-                title: "Confirmation",
-                content: "Are you sure you want to delete this data?",
-                okText: "Delete",
-                okButtonProps: { danger: true },
-                onOk: () => handleDelete(index),
-              });
-            }}
-          />
-        </Tooltip>
+        <div className="flex gap-2 justify-center">
+          <Tooltip title="Detail">
+            <Button
+              icon={<EyeFilled />}
+              onClick={() => {
+                navigate(`/week-3/list/${row.id}`);
+              }}
+            />
+          </Tooltip>
+
+          <Tooltip title="Remove">
+            <Button
+              icon={<DeleteFilled className="!text-red-500" />}
+              onClick={() => {
+                modal.confirm({
+                  icon: <></>,
+                  title: "Confirmation",
+                  content: "Are you sure you want to delete this data?",
+                  okText: "Delete",
+                  okButtonProps: { danger: true },
+                  onOk: () => handleDelete(index),
+                });
+              }}
+            />
+          </Tooltip>
+        </div>
       ),
     },
   ];
 
   const handleDelete = async (deletedIndex) => {
     try {
-      const filteredData = data.filter((_, index) => index !== deletedIndex);
+      const filteredData = localData.filter(
+        (_, index) => index !== deletedIndex
+      );
 
       localStorage.setItem("list_form", JSON.stringify(filteredData));
 
-      getLocalData();
+      refetch();
     } catch (error) {
       console.log(error, "error");
     }
   };
-
-  const getLocalData = () => {
-    const localData = localStorage.getItem("list_form");
-
-    if (localData) {
-      setData(JSON.parse(localData));
-    }
-  };
-
-  useEffect(() => {
-    getLocalData();
-  }, []);
 
   return (
     <>
@@ -90,7 +93,7 @@ export default function Week3ListTable({}) {
 
       <Divider />
 
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={localData} rowKey={"id"} />
     </>
   );
 }

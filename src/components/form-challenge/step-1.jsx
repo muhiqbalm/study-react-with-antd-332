@@ -1,21 +1,9 @@
 import { Form, Input } from "antd";
+import { useLocalData } from "../../hooks";
 import { onlyAlphanumeric } from "../../utils";
-import { useEffect, useState } from "react";
 
 export default function Step1Form() {
-  const [data, setData] = useState([]);
-
-  const getLocalData = () => {
-    const localData = localStorage.getItem("list_form");
-
-    if (localData) {
-      setData(JSON.parse(localData));
-    }
-  };
-
-  useEffect(() => {
-    getLocalData();
-  }, []);
+  const [localData] = useLocalData("form_data");
 
   return (
     <>
@@ -45,7 +33,9 @@ export default function Step1Form() {
           { required: true, message: "Username is required!" },
           {
             validator: (_, value) => {
-              const isExists = data.some((item) => item.username === value);
+              const isExists = localData.some(
+                (item) => item.username === value
+              );
 
               if (value && isExists) {
                 return Promise.reject();

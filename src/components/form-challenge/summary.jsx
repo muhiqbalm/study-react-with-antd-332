@@ -4,8 +4,6 @@ export default function Summary() {
   const form = Form.useFormInstance();
   const formData = form.getFieldsValue(true);
 
-  console.log(formData, "===> DATA AKHIR");
-
   return (
     <div className="flex flex-col gap-4">
       {Object.entries(formData).map((item, index) => (
@@ -41,7 +39,7 @@ export default function Summary() {
               width={150}
               height={150}
               alt="profile-img"
-              className="object-fit rounded-md w-[150] h-[150] mt-2"
+              className="object-fit rounded-md h-full w-full mt-2"
             />
           )}
         </div>

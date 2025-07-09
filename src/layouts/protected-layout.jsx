@@ -1,7 +1,8 @@
 import { theme } from "antd";
-import NavigationBar from "./navigation-bar";
+import NavigationBar from "../components/navigation-bar";
+import { Outlet } from "react-router-dom";
 
-export default function AppLayout({ children, items }) {
+export default function ProtectedLayout({ items }) {
   const { token } = theme.useToken();
 
   return (
@@ -11,7 +12,9 @@ export default function AppLayout({ children, items }) {
     >
       <NavigationBar items={items} />
 
-      <div className="flex-1 flex flex-col p-8 overflow-y-auto">{children}</div>
+      <div className="flex-1 flex flex-col p-8 overflow-y-auto">
+        <Outlet />
+      </div>
     </div>
   );
 }

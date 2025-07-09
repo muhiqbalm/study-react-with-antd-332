@@ -3,6 +3,7 @@ import { passwordValidation } from "../../utils";
 
 export default function Step3Form() {
   const form = Form.useFormInstance();
+
   return (
     <>
       <Form.Item
@@ -79,6 +80,7 @@ export default function Step3Form() {
         rules={[{ required: true, message: "Security Question is required!" }]}
       >
         <Select
+          allowClear
           placeholder="Choose your security question"
           options={SECURITY_QUESTIONS.map((item) => ({
             label: item,

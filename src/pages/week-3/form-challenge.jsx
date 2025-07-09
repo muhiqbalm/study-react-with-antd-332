@@ -17,11 +17,13 @@ import {
   TitleCard,
 } from "../../components";
 import { useEffect, useState } from "react";
+import { useLocalData } from "../../hooks";
 
 export default function Week3ChallengeForm() {
   const [form] = Form.useForm();
   const { modal } = App.useApp();
   const [current, setCurrent] = useState(0);
+  const [localData] = useLocalData("form_data");
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleBack = () => {
@@ -59,37 +61,42 @@ export default function Week3ChallengeForm() {
     try {
       const localData = localStorage.getItem("list_form");
       const formData = form.getFieldsValue(true);
-      const listData = [...(JSON.parse(localData) || []), formData];
+      const listData = [
+        ...(JSON.parse(localData) || []),
+        { ...formData, id: crypto.randomUUID() },
+      ];
 
       localStorage.setItem("list_form", JSON.stringify(listData));
 
       await delay(2000);
 
       form.resetFields();
-      setCurrent(0);
 
       messageApi.open({
         type: "success",
         content: "Data submitted successfully!",
       });
 
-      localStorage.removeItem("form_data");
+      reset();
     } catch (error) {
       console.log(error, "error");
     }
   };
 
+  const reset = () => {
+    setCurrent(0);
+    localStorage.removeItem("form_data");
+  };
+
   useEffect(() => {
     try {
-      const formData = localStorage.getItem(`form_data`);
-
-      if (formData) {
-        form.setFieldsValue(JSON.parse(formData));
+      if (localData) {
+        form.setFieldsValue(JSON.parse(localData));
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, []);
+  }, [localData]);
 
   return (
     <>
@@ -131,6 +138,10 @@ export default function Week3ChallengeForm() {
           <Card className="!mt-4 w-full">{steps[current].content}</Card>
 
           <div className="flex gap-2">
+            <Button danger htmlType="reset" onClick={reset}>
+              Reset
+            </Button>
+
             {current > 0 && <Button onClick={handleBack}>Back</Button>}
 
             <Button htmlType="submit" type="primary">
