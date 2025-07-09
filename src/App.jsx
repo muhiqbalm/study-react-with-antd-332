@@ -1,8 +1,8 @@
 import { DesktopOutlined, HomeOutlined } from "@ant-design/icons";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./components";
-import { Week3ChallengeForm } from "./pages";
+import { RegistrationForm, Week3ChallengeForm } from "./pages";
 
 const items = [
   {
@@ -27,7 +27,17 @@ const items = [
     key: "/week-4",
     icon: <DesktopOutlined />,
     label: "Week 4",
-    children: [{ key: "/week-3/day-1", label: "Day 1", element: <></> }],
+    children: [
+      {
+        key: "/week-3/day-1",
+        label: "Day 1",
+        element: (
+          <>
+            <RegistrationForm />
+          </>
+        ),
+      },
+    ],
   },
 ];
 
@@ -53,9 +63,11 @@ function App() {
   return (
     <BrowserRouter>
       <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-        <AppLayout items={items}>
-          <Routes>{generateRoutes(items)}</Routes>
-        </AppLayout>
+        <AntdApp>
+          <AppLayout items={items}>
+            <Routes>{generateRoutes(items)}</Routes>
+          </AppLayout>
+        </AntdApp>
       </ConfigProvider>
     </BrowserRouter>
   );

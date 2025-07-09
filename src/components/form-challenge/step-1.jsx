@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { onlyAlphanumeric } from "../../utils";
 
 export default function Step1Form() {

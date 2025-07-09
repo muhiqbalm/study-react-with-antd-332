@@ -13,7 +13,7 @@ export default function Step2Form() {
           { type: "email", message: "Invalid email format!" },
         ]}
       >
-        <Input />
+        <Input placeholder="e.g. someone@mail.com" />
       </Form.Item>
 
       <Form.Item
@@ -34,6 +34,7 @@ export default function Step2Form() {
           maxLength={16}
           showCount
           onKeyDown={onlyNumeric}
+          placeholder="Enter your phone number"
         />
       </Form.Item>
 
@@ -47,6 +48,7 @@ export default function Step2Form() {
           rows={3}
           maxLength={255}
           showCount
+          placeholder="Enter your address"
           onKeyDown={onlyAlphanumeric}
         />
       </Form.Item>
