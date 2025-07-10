@@ -8,27 +8,43 @@ import {
   Week3ListTable,
 } from "./pages";
 import { ProtectedLayout, UnprotectedLayout } from "./layouts";
+import { ThemeProvider, useTheme } from "./context";
 
 function App() {
   return (
     <BrowserRouter>
-      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-        <AntdApp>
-          <Routes>
-            <Route
-              path="/"
-              element={<ProtectedLayout items={protectedItems} />}
-            >
-              {generateRoutes(protectedItems)}
-            </Route>
-
-            <Route path="/" element={<UnprotectedLayout />}>
-              {generateRoutes(publicItems)}
-            </Route>
-          </Routes>
-        </AntdApp>
-      </ConfigProvider>
+      <ThemeProvider>
+        <MainContent />
+      </ThemeProvider>
     </BrowserRouter>
+  );
+}
+
+function MainContent() {
+  const { themeData } = useTheme();
+
+  console.log(themeData, "app");
+
+  return (
+    <ConfigProvider
+      key={themeData}
+      theme={{
+        algorithm:
+          themeData === "light" ? theme.defaultAlgorithm : theme.darkAlgorithm,
+      }}
+    >
+      <AntdApp>
+        <Routes>
+          <Route path="/" element={<ProtectedLayout items={protectedItems} />}>
+            {generateRoutes(protectedItems)}
+          </Route>
+
+          <Route path="/" element={<UnprotectedLayout />}>
+            {generateRoutes(publicItems)}
+          </Route>
+        </Routes>
+      </AntdApp>
+    </ConfigProvider>
   );
 }
 

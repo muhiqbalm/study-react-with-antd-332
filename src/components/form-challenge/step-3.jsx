@@ -9,7 +9,6 @@ export default function Step3Form() {
       <Form.Item
         name="password"
         label="Password"
-        validateTrigger="onBlur"
         rules={[
           { required: true, message: "Password is required!" },
           {
@@ -49,7 +48,6 @@ export default function Step3Form() {
             <Form.Item
               name="confirm_password"
               label="Confirm Password"
-              validateTrigger="onBlur"
               rules={[
                 { required: true, message: "Confirm Password is required!" },
                 {

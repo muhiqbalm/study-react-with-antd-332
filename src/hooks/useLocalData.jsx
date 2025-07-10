@@ -1,21 +1,39 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useLocalData(name) {
-  const [localData, setLocalData] = useState([]);
+  const [data, setData] = useState([]);
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     if (!name) return;
 
-    const storedData = localStorage.getItem(name);
+    try {
+      const stored = localStorage.getItem(name);
+      if (stored) {
+        setData(JSON.parse(stored));
+      } else {
+        setData([]);
+      }
+    } catch (err) {
+      console.error("Failed to parse localStorage data", err);
+      setData([]);
+    }
+  }, [name]);
 
-    setLocalData(JSON.parse(storedData));
-
-    console.log(storedData, "....");
-  };
+  const setValue = useCallback(
+    (newValue) => {
+      try {
+        localStorage.setItem(name, JSON.stringify(newValue));
+        setData(newValue);
+      } catch (err) {
+        console.error("Failed to set localStorage data", err);
+      }
+    },
+    [name]
+  );
 
   useEffect(() => {
     refetch();
-  }, [name]);
+  }, [refetch]);
 
-  return [localData, refetch];
+  return [data, refetch, setValue];
 }

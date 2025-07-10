@@ -1,6 +1,6 @@
 import { theme } from "antd";
-import NavigationBar from "../components/navigation-bar";
 import { Outlet } from "react-router-dom";
+import NavigationBar from "../components/navigation-bar";
 
 export default function ProtectedLayout({ items }) {
   const { token } = theme.useToken();

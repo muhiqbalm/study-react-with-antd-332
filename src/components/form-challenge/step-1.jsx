@@ -3,7 +3,7 @@ import { useLocalData } from "../../hooks";
 import { onlyAlphanumeric } from "../../utils";
 
 export default function Step1Form() {
-  const [localData] = useLocalData("form_data");
+  const [localData] = useLocalData("list_form");
 
   return (
     <>

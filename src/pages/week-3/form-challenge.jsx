@@ -8,6 +8,7 @@ import {
   Steps,
   Typography,
 } from "antd";
+import { useEffect, useState } from "react";
 import {
   Step1Form,
   Step2Form,
@@ -16,7 +17,6 @@ import {
   Summary,
   TitleCard,
 } from "../../components";
-import { useEffect, useState } from "react";
 import { useLocalData } from "../../hooks";
 
 export default function Week3ChallengeForm() {
@@ -37,6 +37,7 @@ export default function Week3ChallengeForm() {
     }
 
     setCurrent((prev) => prev + 1);
+    // setCurrent(current + 1);
   };
 
   const saveToLocalStorage = () => {
@@ -66,6 +67,7 @@ export default function Week3ChallengeForm() {
         { ...formData, id: crypto.randomUUID() },
       ];
 
+      // POST DATA
       localStorage.setItem("list_form", JSON.stringify(listData));
 
       await delay(2000);
@@ -91,7 +93,7 @@ export default function Week3ChallengeForm() {
   useEffect(() => {
     try {
       if (localData) {
-        form.setFieldsValue(JSON.parse(localData));
+        form.setFieldsValue(localData);
       }
     } catch (error) {
       console.log(error, "error");
@@ -186,7 +188,7 @@ const DEFAULT_INITIAL_VALUES = {
   address: "",
   password: "",
   confirm_password: "",
-  security_question: "",
+  security_question: undefined,
   security_question_answer: "",
   profile_image_url: "",
   bio: "",
